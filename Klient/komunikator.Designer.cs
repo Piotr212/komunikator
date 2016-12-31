@@ -1,6 +1,6 @@
 ﻿namespace Klient
 {
-    partial class Form1
+    partial class komunikator
     {
         /// <summary>
         /// Required designer variable.
@@ -40,8 +40,8 @@
             this.textFrendsIp = new System.Windows.Forms.TextBox();
             this.textMessage = new System.Windows.Forms.TextBox();
             this.listMessage = new System.Windows.Forms.ListBox();
-            this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
+            this.connect = new System.Windows.Forms.Button();
+            this.send = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
@@ -151,39 +151,39 @@
             this.listMessage.Size = new System.Drawing.Size(714, 186);
             this.listMessage.TabIndex = 3;
             // 
-            // button1
+            // connect
             // 
-            this.button1.Location = new System.Drawing.Point(626, 80);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 4;
-            this.button1.Text = "Start";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.connect.Location = new System.Drawing.Point(626, 80);
+            this.connect.Name = "connect";
+            this.connect.Size = new System.Drawing.Size(75, 23);
+            this.connect.TabIndex = 4;
+            this.connect.Text = "Start";
+            this.connect.UseVisualStyleBackColor = true;
+            this.connect.Click += new System.EventHandler(this.connect_Click);
             // 
-            // button2
+            // send
             // 
-            this.button2.Location = new System.Drawing.Point(652, 363);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(75, 23);
-            this.button2.TabIndex = 5;
-            this.button2.Text = "Wyślij";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            this.send.Location = new System.Drawing.Point(652, 363);
+            this.send.Name = "send";
+            this.send.Size = new System.Drawing.Size(75, 23);
+            this.send.TabIndex = 5;
+            this.send.Text = "Wyślij";
+            this.send.UseVisualStyleBackColor = true;
+            this.send.Click += new System.EventHandler(this.send_Click);
             // 
-            // Form1
+            // komunikator
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(749, 428);
-            this.Controls.Add(this.button2);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.send);
+            this.Controls.Add(this.connect);
             this.Controls.Add(this.listMessage);
             this.Controls.Add(this.textMessage);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
-            this.Name = "Form1";
-            this.Text = "Form1";
+            this.Name = "komunikator";
+            this.Text = "komunikator";
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
@@ -207,8 +207,8 @@
         private System.Windows.Forms.TextBox textFrendsIp;
         private System.Windows.Forms.TextBox textMessage;
         private System.Windows.Forms.ListBox listMessage;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button connect;
+        private System.Windows.Forms.Button send;
     }
 }
 

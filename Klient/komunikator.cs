@@ -9,21 +9,32 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Net;
 using System.Net.Sockets;
+using System.Text.RegularExpressions;
 
 namespace Klient
 {
-    public partial class Form1 : Form
+    public partial class komunikator : Form
     {
         Socket sck;
         EndPoint epLocal, epRemote;
-        public Form1()
+        public komunikator()
         {
             InitializeComponent();
             sck = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
             sck.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
-            textLocalIp.Text = GetLocalIP();
-            textFrendsIp.Text = GetLocalIP();
+            textLocalIp.Text = GetIP();
+            textFrendsIp.Text = GetIP();
         }
+        public static WebClient webclient = new WebClient();
+        public static string GetIP()
+        {
+            string externalIP = "";
+            externalIP = webclient.DownloadString("http://checkip.dyndns.org/");
+            externalIP = (new Regex(@"\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}"))
+                                           .Matches(externalIP)[0].ToString();
+            return externalIP;
+        }
+
         private void MessageCallBack(IAsyncResult aResult)
         {
             try
@@ -60,20 +71,21 @@ namespace Klient
             return "127.0.0.1";
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void connect_Click(object sender, EventArgs e)
         {
             try
             {
-                epLocal = new IPEndPoint(IPAddress.Parse(textLocalIp.Text), Convert.ToInt32(textLocalPort.Text));
+                
+                epLocal = new IPEndPoint(IPAddress.Parse(GetLocalIP()), Convert.ToInt32(textLocalPort.Text));
                 sck.Bind(epLocal);
                 epRemote = new IPEndPoint(IPAddress.Parse(textFrendsIp.Text), Convert.ToInt32(textFrendsPort.Text));
                 sck.Connect(epRemote);
 
                 byte[] buffer = new byte[1500];
                 sck.BeginReceiveFrom(buffer, 0, buffer.Length, SocketFlags.None, ref epRemote, new AsyncCallback(MessageCallBack), buffer);
-                button1.Text = "Połączony";
-                button1.Enabled = false;
-                button2.Enabled = true;
+                connect.Text = "Połączony";
+                connect.Enabled = false;
+                send.Enabled = true;
                 textMessage.Focus();
             }
             catch (Exception ex)
@@ -83,7 +95,7 @@ namespace Klient
             }
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private void send_Click(object sender, EventArgs e)
         {
             try
             {
