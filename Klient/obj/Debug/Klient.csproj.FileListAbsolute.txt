@@ -16,3 +16,12 @@ D:\pobieranie\Klient\Klient\Klient\obj\Debug\Klient.csprojResolveAssemblyReferen
 D:\pobieranie\Klient\Klient\Klient\obj\Debug\Klient.Properties.Resources.resources
 D:\pobieranie\Klient\Klient\Klient\obj\Debug\Klient.csproj.GenerateResource.Cache
 D:\pobieranie\Klient\Klient\Klient\obj\Debug\Klient.komunikator.resources
+C:\Users\Piotr\Desktop\github\komunikator\Klient\bin\Debug\Klient.exe.config
+C:\Users\Piotr\Desktop\github\komunikator\Klient\obj\Debug\Klient.exe
+C:\Users\Piotr\Desktop\github\komunikator\Klient\obj\Debug\Klient.pdb
+C:\Users\Piotr\Desktop\github\komunikator\Klient\bin\Debug\Klient.exe
+C:\Users\Piotr\Desktop\github\komunikator\Klient\bin\Debug\Klient.pdb
+C:\Users\Piotr\Desktop\github\komunikator\Klient\obj\Debug\Klient.csprojResolveAssemblyReference.cache
+C:\Users\Piotr\Desktop\github\komunikator\Klient\obj\Debug\Klient.komunikator.resources
+C:\Users\Piotr\Desktop\github\komunikator\Klient\obj\Debug\Klient.Properties.Resources.resources
+C:\Users\Piotr\Desktop\github\komunikator\Klient\obj\Debug\Klient.csproj.GenerateResource.Cache

@@ -17,39 +17,74 @@ namespace Klient
     {
         Socket sck;
         EndPoint epLocal, epRemote;
+        RSA rsa;
+        Dictionary<string, int> klucze;
+        
+        int klucz_publiczny_e=0;
+        int klucz_publiczny_N = 0;
         public komunikator()
         {
             InitializeComponent();
             sck = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
             sck.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
-            textLocalIp.Text = GetIP();
-            textFrendsIp.Text = GetIP();
+            textLocalIp.Text = GetLocalIP();
+            
+            textFrendsIp.Text = GetLocalIP();
+            rsa = new RSA();
+            klucze = rsa.generowanie_klucza();
+            
         }
-        public static WebClient webclient = new WebClient();
-        public static string GetIP()
-        {
-            string externalIP = "";
-            externalIP = webclient.DownloadString("http://checkip.dyndns.org/");
-            externalIP = (new Regex(@"\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}"))
-                                           .Matches(externalIP)[0].ToString();
-            return externalIP;
-        }
+       
+        
 
         private void MessageCallBack(IAsyncResult aResult)
         {
             try
             {
-                int size = sck.EndReceiveFrom(aResult,ref epRemote);
-                if (size>0)
+                
+               
+                
+                
+                    
+
+
+                    
+                        byte[] receivedData = new byte[1464];
+                        ASCIIEncoding eEncoding = new ASCIIEncoding();
+                        
+                        receivedData = (byte[])aResult.AsyncState;
+                        string receivedMessage = eEncoding.GetString(receivedData);
+                
+                if (receivedMessage.First()!='\0')
                 {
-                    byte[] receivedData = new byte[1464];
-                    receivedData = (byte[])aResult.AsyncState;
-                    ASCIIEncoding eEncoding = new ASCIIEncoding();
-                    string receivedMessage = eEncoding.GetString(receivedData);
-                    listMessage.Items.Add("Znajomy: "+receivedMessage);
+
+                    if (klucz_publiczny_e==0)
+                    {
+                        
+                        string[] klucz = receivedMessage.Split(':');
+                        klucz_publiczny_e =Int32.Parse(klucz[0]);
+                        klucz_publiczny_N = Int32.Parse(klucz[1]);
+                        if (klucz[2].Contains("s"))
+                        {
+                           
+                            ASCIIEncoding enc = new ASCIIEncoding();
+                            byte[] msg = new byte[1500];
+                            msg = enc.GetBytes( klucze["e"]+ ":" + klucze["N"]+":n");
+                            sck.Send(msg);
+                        }
+                    }
+                    else
+                    {
+
+                        listMessage.Items.Add("Znajomy: "+rsa.odszyfrowanie(receivedMessage,klucze["d"],klucze["N"]));
+                    }
                 }
-                byte[] buffer = new byte[1500];
-                sck.BeginReceiveFrom(buffer, 0, buffer.Length, SocketFlags.None, ref epRemote, new AsyncCallback(MessageCallBack), buffer);
+                        
+                    
+                    byte[] buffer = new byte[1500];
+                    sck.BeginReceiveFrom(buffer, 0, buffer.Length, SocketFlags.None, ref epRemote, new AsyncCallback(MessageCallBack), buffer);
+                
+                
             }
             catch (Exception exp)
             {
@@ -87,6 +122,12 @@ namespace Klient
                 connect.Enabled = false;
                 send.Enabled = true;
                 textMessage.Focus();
+                ASCIIEncoding enc = new ASCIIEncoding();
+                byte[] msg = new byte[1500];
+                msg = enc.GetBytes(klucze["e"] + ":" + klucze["N"] + ":s");
+                sck.Send(msg);
+
+                
             }
             catch (Exception ex)
             {
@@ -94,24 +135,33 @@ namespace Klient
                 MessageBox.Show(ex.ToString());
             }
         }
+        
 
+        
         private void send_Click(object sender, EventArgs e)
         {
-            try
-            {
-                ASCIIEncoding enc = new ASCIIEncoding();
-                byte[]  msg= new byte[1500];
-                msg = enc.GetBytes(textMessage.Text);
+            
+                try
+                {
+                    
+                    ASCIIEncoding enc = new ASCIIEncoding();
+                    byte[] msg = new byte[1500];
+                    msg = rsa.szyfrowanie(klucz_publiczny_e, klucz_publiczny_N, textMessage.Text);
 
-                sck.Send(msg);
-                listMessage.Items.Add("Ja: " + textMessage.Text);
-                textMessage.Clear();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.ToString());
-                throw;
-            }
+                    sck.Send(msg);
+                    listMessage.Items.Add("Ja: " + textMessage.Text);
+                    textMessage.Clear();
+
+
+
+
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.ToString());
+                    throw;
+                }
+            
         }
     }
 }
